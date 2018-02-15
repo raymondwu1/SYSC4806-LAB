@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AddressBook</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="jQueryController.js"></script>
+</head>
+<body>
+<h1>Address Book</h1>
+
+<p>Enter Buddy</p>
+<form action="#" th:action="@{/}" th:object="${buddy}" method="post">
+    <p>Name: <input type="text" th:field="*{name}" /></p>
+    <p>Phone Number: <input type="text" th:field="*{phoneNumber}" /></p>
+    <p><input type="submit" value="Add Buddy" /></p>
+</form>
+
+<p th:each ="existingBuddy : ${buddies}"
+   th:text="|Name : ${existingBuddy.name} Phone Number: ${existingBuddy.phoneNumber}|"/>
+
+</body>
+</html>

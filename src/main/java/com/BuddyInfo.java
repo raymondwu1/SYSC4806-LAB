@@ -9,7 +9,7 @@ public class BuddyInfo {
 
     @Id
     @GeneratedValue(strategy= AUTO)
-    private Long id;
+    private Integer id;
     private String name;
     private String phoneNumber;
 
@@ -18,6 +18,14 @@ public class BuddyInfo {
     public BuddyInfo(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setId(Integer id){
+        this.id = id;
+    }
+
+    public Integer getId(){
+        return id;
     }
 
     public String getName() {

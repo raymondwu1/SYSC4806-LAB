@@ -9,42 +9,26 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class AddressBookController {
 
-    private AddressBookRepository addressRepo;
+    @Autowired
+    BuddyInfoRepository buddyRepo;
 
     @Autowired
-    public void setRepo(AddressBookRepository addressRepo){
-        this.addressRepo = addressRepo;
+    AddressBookRepository addressRepo;
+
+    @GetMapping("/addressbook")
+    public String addressBookForm(Model model) {
+        model.addAttribute("books", new AddressBook());
+        model.addAttribute("buddy", new BuddyInfo());
+        model.addAttribute("buddies", buddyRepo.findAll());
+        model.addAttribute("addressbooks", addressRepo.findAll());
+        return "books";
     }
 
-    @RequestMapping(value="/addressbook", method= RequestMethod.PUT)
-    public String createAddressBook(Model model){
-        AddressBook book = new AddressBook();
-        model.addAttribute("book",book);
+    @PostMapping("/addressbook")
+    public String addressBookSubmit(@ModelAttribute("buddy") BuddyInfo buddy, @ModelAttribute("book") AddressBook book) {
         addressRepo.save(book);
-        return "book";
+        buddyRepo.save(buddy);
+        return "result";
     }
 
-    @RequestMapping(value="/addressbook/buddies",method=RequestMethod.PUT)
-    public String addBuddy(@RequestParam(value="name") String name,
-                           @RequestParam(value="phoneNumber") String phoneNumber,
-                           Model model){
-        AddressBook book = addressRepo.findAll().iterator().next();
-        BuddyInfo buddy = new BuddyInfo(name,phoneNumber);
-        book.addBuddy(buddy);
-        model.addAttribute("book",book);
-        addressRepo.save(book);
-        return "book";
-    }
-
-    @RequestMapping(value="/addressbook/buddies",method= RequestMethod.DELETE)
-    public String removeBuddy(@RequestParam(value="name") String name,
-                              @RequestParam(value="phoneNumber") String phoneNumber,
-                              Model model){
-        AddressBook book = addressRepo.findAll().iterator().next();
-        BuddyInfo b = new BuddyInfo(name, phoneNumber);
-        book.removeBuddy(b);
-        model.addAttribute("book",book);
-        addressRepo.save(book);
-        return "book";
-    }
 }
